@@ -7,6 +7,8 @@ import Values from './components/Values';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 
+const whatsappUrl = 'https://wa.me/1234567890';
+
 export default function App() {
   const observerRef = useRef(null);
 
@@ -16,10 +18,11 @@ export default function App() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            observerRef.current?.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      { threshold: 0.12, rootMargin: '0px 0px -70px 0px' }
     );
 
     const elements = document.querySelectorAll('.section-reveal');
@@ -29,16 +32,27 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--navy-dark)' }}>
-      <Navbar />
+    <div className="app-shell min-h-screen">
+      <Navbar whatsappUrl={whatsappUrl} />
       <main>
-        <Hero />
-        <Books />
+        <Hero whatsappUrl={whatsappUrl} />
+        <Books whatsappUrl={whatsappUrl} />
         <About />
         <Values />
-        <CTA />
+        <CTA whatsappUrl={whatsappUrl} />
       </main>
       <Footer />
+
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="floating-whatsapp"
+        aria-label="اطلب عبر واتساب"
+      >
+        <span aria-hidden="true">☏</span>
+        <span>واتساب</span>
+      </a>
     </div>
   );
 }
